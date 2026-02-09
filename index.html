@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Football Live Test</title>
+</head>
+<body>
+  <h1>Football Live Data Test</h1>
+
+  <button onclick="getLeagues()">Leagues</button>
+  <button onclick="getLiveFixtures()">Live Fixtures</button>
+  <button onclick="getStandings()">EPL Standings</button>
+
+  <pre id="output"></pre>
+
+  <script>
+    const API_BASE = "http://localhost:3000/api"; // or your Vercel URL
+    const output = document.getElementById("output");
+
+    async function fetchAPI(endpoint) {
+      try {
+        const res = await fetch(`${API_BASE}/${endpoint}`);
+        return await res.json();
+      } catch (err) {
+        return { error: err.message };
+      }
+    }
+
+    async function getLeagues() {
+      output.textContent = "Loading leagues...";
+      const data = await fetchAPI("leagues");
+      output.textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function getLiveFixtures() {
+      output.textContent = "Loading live fixtures...";
+      const data = await fetchAPI("fixtures_live");
+      output.textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function getStandings() {
+      output.textContent = "Loading EPL standings...";
+      const data = await fetchAPI("standings?league=39&season=2025");
+      output.textContent = JSON.stringify(data, null, 2);
+    }
+  </script>
+</body>
+</html>
